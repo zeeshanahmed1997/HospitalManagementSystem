@@ -12,6 +12,17 @@ using System.Text;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllForDev", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 var connectionString = builder.Configuration.GetConnectionString("HMS");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -25,12 +36,6 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
     options.Password.RequireDigit = true;
     options.Password.RequiredLength = 6;
     options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireUppercase = true;
-    options.Password.RequireLowercase = false;
-    options.User.RequireUniqueEmail = true;
-    options.SignIn.RequireConfirmedEmail = false;
-    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-    options.Lockout.MaxFailedAccessAttempts = 5;
 })
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
@@ -56,6 +61,7 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddScoped<IDbConnection>(sp => new SqlConnection(connectionString));
+
 builder.Services.AddControllers();
 
 builder.Services.AddOpenApi(options =>
@@ -71,7 +77,6 @@ builder.Services.AddOpenApi(options =>
             In = ParameterLocation.Header,
             Description = "Paste your JWT token here"
         });
-
         document.SecurityRequirements.Add(new OpenApiSecurityRequirement
         {
             {
@@ -86,7 +91,6 @@ builder.Services.AddOpenApi(options =>
                 Array.Empty<string>()
             }
         });
-
         return Task.CompletedTask;
     });
 });
@@ -97,10 +101,12 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference();
+    app.UseCors("AllowAllForDev");
 }
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
 app.Run();
