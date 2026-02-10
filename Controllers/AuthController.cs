@@ -57,15 +57,19 @@ namespace HospitalManagementSystem.Controllers
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
+
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, "Patient");
+                // Check if a role was provided, otherwise default to "Patient"
+                string roleToAssign = string.IsNullOrWhiteSpace(model.Role) ? "Patient" : model.Role;
+
+                // Optional: You might want to verify if the role exists in your RoleManager here
+                await _userManager.AddToRoleAsync(user, roleToAssign);
 
                 return Ok(new
                 {
                     success = true,
-                    message = "User registered successfully as Patient"
-                    // Optionally add user info here too if frontend needs it immediately
+                    message = $"User registered successfully as {roleToAssign}"
                 });
             }
 
@@ -136,7 +140,7 @@ namespace HospitalManagementSystem.Controllers
                 user = new
                 {
                     id = user.Id,
-                    fullName = $"{user.FirstName} ".Trim() + $"{user.LastName}".Trim(),
+                    fullName = $"{user.FirstName}"+ $" {user.LastName}",
                     email = user.Email ?? "",
                     phoneNumber = user.PhoneNumber ?? "",
                     roles = userRoles

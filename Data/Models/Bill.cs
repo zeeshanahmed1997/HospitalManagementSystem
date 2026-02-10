@@ -15,5 +15,9 @@ namespace HospitalManagementSystem.Data.Models
         [ForeignKey("AppointmentId")]
         public Appointment? Appointment { get; set; }
         public bool IsDeleted { get; set; } = false;
+
+        // Add this property to the Bill class
+        public ICollection<BillItem> Items { get; set; } = new List<BillItem>();
+        public ICollection<Payment>? Payments { get; set; } // Add this property to fix CS1061
     }
 }

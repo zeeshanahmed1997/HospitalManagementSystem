@@ -22,7 +22,20 @@ namespace HospitalManagementSystem.Context
         public DbSet<LabTest> LabTests { get; set; }
         public DbSet<LabReport> LabReports { get; set; }
         public DbSet<Staff> StaffMembers { get; set; }
+        // 1. Prescription (connects doctor → patient → medicines)
+        public DbSet<Prescription> Prescriptions { get; set; }
 
+        // 2. PrescriptionItem (many-to-many: one prescription can have multiple medicines)
+        public DbSet<PrescriptionItem> PrescriptionItems { get; set; }
+
+        // 3. Admission / InpatientRecord (for ward/bed usage + inpatient billing)
+        public DbSet<Admission> Admissions { get; set; }
+
+        // 4. BillItem (detailed breakdown of what the bill is for)
+        public DbSet<BillItem> BillItems { get; set; }
+
+        // 5. Payment (track actual payments against bills)
+        public DbSet<Payment> Payments { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -47,7 +60,31 @@ namespace HospitalManagementSystem.Context
             builder.Entity<LabTest>().Property(l => l.Price).HasPrecision(18, 2);
 
             builder.Entity<Appointment>().Property(a => a.Status).HasConversion(v => v.ToString(), v => (AppointmentStatus)Enum.Parse(typeof(AppointmentStatus), v));
+            // Prescription
+            builder.Entity<Prescription>()
+                .HasOne(p => p.Patient).WithMany().HasForeignKey(p => p.PatientId).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<Prescription>()
+                .HasOne(p => p.Doctor).WithMany().HasForeignKey(p => p.DoctorId).OnDelete(DeleteBehavior.Restrict);
 
+            // PrescriptionItem
+            builder.Entity<PrescriptionItem>()
+                .HasOne(pi => pi.Prescription).WithMany(p => p.Items).HasForeignKey(pi => pi.PrescriptionId);
+            builder.Entity<PrescriptionItem>()
+                .HasOne(pi => pi.Medicine).WithMany().HasForeignKey(pi => pi.MedicineId);
+
+            // Admission
+            builder.Entity<Admission>()
+                .HasOne(a => a.Patient).WithMany().HasForeignKey(a => a.PatientId);
+            builder.Entity<Admission>()
+                .HasOne(a => a.Bed).WithMany().HasForeignKey(a => a.BedId).IsRequired(false);
+
+            // BillItem
+            builder.Entity<BillItem>()
+                .HasOne(bi => bi.Bill).WithMany(b => b.Items).HasForeignKey(bi => bi.BillId);
+
+            // Payment
+            builder.Entity<Payment>()
+                .HasOne(p => p.Bill).WithMany(b => b.Payments).HasForeignKey(p => p.BillId);
             builder.Entity<IdentityRole<int>>().HasData(
                 new IdentityRole<int> { Id = 1, Name = "Admin", NormalizedName = "ADMIN" },
                 new IdentityRole<int> { Id = 2, Name = "Doctor", NormalizedName = "DOCTOR" },
