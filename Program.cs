@@ -1,15 +1,16 @@
 using HospitalManagementSystem.Context;
 using HospitalManagementSystem.Data.Models;
+using HospitalManagementSystem.DataAccessLayer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Scalar.AspNetCore;
 using System.Data;
 using System.Text;
-using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +23,7 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader();
     });
 });
-
+builder.Services.AddScoped<UserRepository>();
 var connectionString = builder.Configuration.GetConnectionString("HMS");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

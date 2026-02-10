@@ -61,7 +61,7 @@ namespace HospitalManagementSystem.Controllers
             if (result.Succeeded)
             {
                 // Check if a role was provided, otherwise default to "Patient"
-                string roleToAssign = string.IsNullOrWhiteSpace(model.Role) ? "Patient" : model.Role;
+                string roleToAssign = string.IsNullOrWhiteSpace(model.Role) ? "Admin" : model.Role;
 
                 // Optional: You might want to verify if the role exists in your RoleManager here
                 await _userManager.AddToRoleAsync(user, roleToAssign);
