@@ -1,4 +1,5 @@
 ﻿using HospitalManagementSystem.DataAccessLayer;
+using HospitalManagementSystem.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,6 +12,16 @@ public class Usercontroller : ControllerBase
     public Usercontroller(UserRepository userRepository)
     {
         _userRepository = userRepository;
+    }
+
+    [HttpPost("user")]
+    // [Authorize(Roles = "Admin")]
+    [AllowAnonymous]
+    public async Task<IActionResult> CreateUser([FromBody] UserDto user)
+    {
+        var result = await _userRepository.CreateUser(user);
+        return Ok(result);
+        
     }
 
     [HttpGet("users")]
