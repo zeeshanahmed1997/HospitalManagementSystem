@@ -15,7 +15,7 @@ public class Usercontroller : ControllerBase
     }
 
     [HttpPost("user")]
-    // [Authorize(Roles = "Admin")]
+     [Authorize(Roles = "Admin")]
     [AllowAnonymous]
     public async Task<IActionResult> CreateUser([FromBody] UserDto user)
     {
@@ -30,6 +30,14 @@ public class Usercontroller : ControllerBase
     {
         // No more LINQ errors or .Result deadlocks!
         var users = await _userRepository.GetAllUsersAsync();
+        return Ok(users);
+    }
+    [HttpPut("edit/{id}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> EditUser([FromRoute] int id,[FromBody] UserDto updatedUser)
+    {
+        // No more LINQ errors or .Result deadlocks!
+        var users = await _userRepository.UpdateUser(id,updatedUser);
         return Ok(users);
     }
 }

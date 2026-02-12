@@ -1,10 +1,10 @@
-﻿using Dapper;
-using HospitalManagementSystem.DTO;
+﻿using HospitalManagementSystem.DTO;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Data;
+using Dapper; // Ensure Dapper is imported
 
 namespace HospitalManagementSystem.DataAccessLayer
 {
@@ -15,8 +15,9 @@ namespace HospitalManagementSystem.DataAccessLayer
 
         public async Task<ApiResponse<IEnumerable<UserDto>>> GetAllUsersAsync()
         {
+            // Map table columns to DTO properties using AS aliases
             const string sql = @"
-                SELECT u.Id, (u.FirstName + ' ' + u.LastName) AS Fullname, 
+                SELECT u.Id, u.FirstName, u.LastName, u.Gender, u.Age, u.Address, 
                        u.Email, u.PhoneNumber, r.Name AS Role
                 FROM AspNetUsers u
                 LEFT JOIN AspNetUserRoles ur ON u.Id = ur.UserId
@@ -40,7 +41,13 @@ namespace HospitalManagementSystem.DataAccessLayer
             if (string.IsNullOrWhiteSpace(userId))
                 return ApiResponse<UserDto>.ErrorResponse("User ID is required.");
 
-            const string sql = "SELECT Id, UserName, Email, PhoneNumber FROM AspNetUsers WHERE Id = @Id";
+            const string sql = @"
+                SELECT u.Id, u.FirstName, u.LastName, u.Gender, u.Age, u.Address, 
+                       u.Email, u.PhoneNumber, r.Name AS Role
+                FROM AspNetUsers u
+                LEFT JOIN AspNetUserRoles ur ON u.Id = ur.UserId
+                LEFT JOIN AspNetRoles r ON ur.RoleId = r.Id
+                WHERE u.Id = @Id";
 
             try
             {
@@ -57,7 +64,47 @@ namespace HospitalManagementSystem.DataAccessLayer
                 return ApiResponse<UserDto>.ErrorResponse("Database error.", [ex.Message]);
             }
         }
-
+        public async Task<ApiResponse<bool>> UpdateUser(int id, UserDto userDto)
+        {             if (userDto is null || id <=0)
+                return ApiResponse<bool>.ErrorResponse("User data is invalid.");
+            const string sql = @"
+                UPDATE AspNetUsers
+                SET FirstName = @FirstName,
+                    LastName = @LastName, 
+                    Email = @Email,
+                    Gender = @Gender,
+                    Age = @Age,
+                    Address = @Address,
+                    PhoneNumber = @PhoneNumber
+              WHERE Id = @Id";
+            //if (userDto.Id == null)
+            //    return ApiResponse<bool>.ErrorResponse("User ID is required for update.");
+            try
+                {
+                using IDbConnection db = new SqlConnection(_connectionString);
+                int rowsAffected = await db.ExecuteAsync(sql, new
+                {
+                    userDto.FirstName,
+                    userDto.LastName,
+                    userDto.Email,
+                    userDto.Address,
+                    userDto.Gender,
+                    userDto.Age,
+                    userDto.PhoneNumber,
+                    Id = id
+                }, null, null, CommandType.Text);
+                if (rowsAffected == 0)
+                    {
+                    return ApiResponse<bool>.ErrorResponse("User not found or no changes made.");
+                }
+                return ApiResponse<bool>.SuccessResponse(true, "User updated successfully.");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error updating user {Id}", userDto.Id);
+                return ApiResponse<bool>.ErrorResponse("Database error.", [ex.Message]);
+            }
+        }
         public async Task<ApiResponse<UserDto>> CreateUser(UserDto user)
         {
             if (user is null) return ApiResponse<UserDto>.ErrorResponse("User data is null.");
@@ -65,7 +112,7 @@ namespace HospitalManagementSystem.DataAccessLayer
             try
             {
                 var passwordHasher = new PasswordHasher<UserDto>();
-                string hashedPassword = passwordHasher.HashPassword(user, user.Password ?? "DefaultPass123!");
+                string hashedPassword = passwordHasher.HashPassword(user, user.Password ?? "Password@123");
 
                 using IDbConnection db = new SqlConnection(_connectionString);
                 db.Open();
@@ -73,33 +120,30 @@ namespace HospitalManagementSystem.DataAccessLayer
 
                 try
                 {
-                    // 1. Remove 'Id' from the column list and the VALUES list
-                    // 2. Add 'SELECT SCOPE_IDENTITY()' at the end to get the new ID
                     const string insertUserSql = @"
-                INSERT INTO AspNetUsers (
-                    FirstName, LastName, Gender, Age, [Address], 
-                    UserName, NormalizedUserName, Email, NormalizedEmail, 
-                    EmailConfirmed, PasswordHash, SecurityStamp, ConcurrencyStamp, 
-                    PhoneNumber, PhoneNumberConfirmed, TwoFactorEnabled, 
-                    LockoutEnabled, AccessFailedCount
-                )
-                VALUES (
-                    @FirstName, @LastName, @Gender, @Age, @Address, 
-                    @UserName, @NormalizedUserName, @Email, @NormalizedEmail, 
-                    @EmailConfirmed, @PasswordHash, @SecurityStamp, @ConcurrencyStamp, 
-                    @PhoneNumber, @PhoneNumberConfirmed, @TwoFactorEnabled, 
-                    @LockoutEnabled, @AccessFailedCount
-                );
-                SELECT SCOPE_IDENTITY();"; // This gets the ID created by SQL Server
+                        INSERT INTO AspNetUsers (
+                            FirstName, LastName, Gender, Age, [Address], 
+                            UserName, NormalizedUserName, Email, NormalizedEmail, 
+                            EmailConfirmed, PasswordHash, SecurityStamp, ConcurrencyStamp, 
+                            PhoneNumber, PhoneNumberConfirmed, TwoFactorEnabled, 
+                            LockoutEnabled, AccessFailedCount
+                        )
+                        VALUES (
+                            @FirstName, @LastName, @Gender, @Age, @Address, 
+                            @UserName, @NormalizedUserName, @Email, @NormalizedEmail, 
+                            @EmailConfirmed, @PasswordHash, @SecurityStamp, @ConcurrencyStamp, 
+                            @PhoneNumber, @PhoneNumberConfirmed, @TwoFactorEnabled, 
+                            @LockoutEnabled, @AccessFailedCount
+                        );
+                        SELECT SCOPE_IDENTITY();";
 
-                    // Use QuerySingleAsync to get the ID back
                     var newUserId = await db.QuerySingleAsync<int>(insertUserSql, new
                     {
-                        FirstName = user.Fullname,
-                        LastName = user.Fullname,
-                        Gender = "Male",
-                        Age = 30,
-                        Address = "Address",
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        Gender = user.Gender,
+                        Age = user.Age,
+                        Address = user.Address,
                         UserName = user.Email,
                         NormalizedUserName = user.Email?.ToUpper(),
                         Email = user.Email,
@@ -115,10 +159,9 @@ namespace HospitalManagementSystem.DataAccessLayer
                         AccessFailedCount = 0
                     }, transaction);
 
-                    // 3. Now use that integer 'newUserId' to insert the role
                     const string insertRoleSql = @"
-                INSERT INTO AspNetUserRoles (UserId, RoleId)
-                SELECT @UserId, Id FROM AspNetRoles WHERE Name = @RoleName;";
+                        INSERT INTO AspNetUserRoles (UserId, RoleId)
+                        SELECT @UserId, Id FROM AspNetRoles WHERE Name = @RoleName;";
 
                     await db.ExecuteAsync(insertRoleSql, new
                     {
@@ -127,12 +170,15 @@ namespace HospitalManagementSystem.DataAccessLayer
                     }, transaction);
 
                     transaction.Commit();
+
+                    // Update the DTO with the new ID before returning
+                    user.Id = newUserId;
                     return ApiResponse<UserDto>.SuccessResponse(user, "User created successfully.");
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     transaction.Rollback();
-                    throw; // Let the outer catch handle the logging
+                    throw;
                 }
             }
             catch (Exception ex)
@@ -141,5 +187,6 @@ namespace HospitalManagementSystem.DataAccessLayer
                 return ApiResponse<UserDto>.ErrorResponse("Creation failed.", [ex.Message]);
             }
         }
+
     }
 }
