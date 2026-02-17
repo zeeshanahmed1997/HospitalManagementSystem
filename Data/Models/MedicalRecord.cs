@@ -18,5 +18,6 @@ namespace HospitalManagementSystem.Data.Models
         public int DoctorId { get; set; }
         [ForeignKey("DoctorId")]
         public Doctor? Doctor { get; set; }
+        public bool IsDeleted { get; set; } = false;
     }
 }

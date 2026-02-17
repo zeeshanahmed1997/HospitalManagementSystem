@@ -4,6 +4,7 @@ using HospitalManagementSystem.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HospitalManagementSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260216173725_updatedrelations")]
+    partial class updatedrelations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,9 +47,6 @@ namespace HospitalManagementSystem.Migrations
 
                     b.Property<int?>("DoctorId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<int>("PatientId")
                         .HasColumnType("int");
@@ -99,9 +99,6 @@ namespace HospitalManagementSystem.Migrations
                     b.Property<string>("Gender")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -159,12 +156,11 @@ namespace HospitalManagementSystem.Migrations
                             AccessFailedCount = 0,
                             Address = "Lahore, Pakistan",
                             Age = 40,
-                            ConcurrencyStamp = "78f308b0-84a2-431b-94bc-9c3a40092050",
+                            ConcurrencyStamp = "2adc1114-2d97-4338-b98d-d180c746e886",
                             Email = "admin@hms.com",
                             EmailConfirmed = true,
                             FirstName = "System",
                             Gender = "Male",
-                            IsDeleted = false,
                             LastName = "Administrator",
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@HMS.COM",
@@ -172,7 +168,7 @@ namespace HospitalManagementSystem.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==",
                             PhoneNumber = "03000000000",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "78bb1230-e7bd-4995-94cc-11e2494fa7da",
+                            SecurityStamp = "d0bfd930-b066-48c6-9e7b-1c6f266d6d24",
                             TwoFactorEnabled = false,
                             UserName = "admin@hms.com"
                         },
@@ -182,12 +178,11 @@ namespace HospitalManagementSystem.Migrations
                             AccessFailedCount = 0,
                             Address = "Lahore, Pakistan",
                             Age = 19,
-                            ConcurrencyStamp = "72b2010b-6eaa-4151-a0be-556758455b2c",
+                            ConcurrencyStamp = "86a68204-03f4-4d7e-9f63-fec3f89ccaa4",
                             Email = "user1@hms.com",
                             EmailConfirmed = true,
                             FirstName = "First1",
                             Gender = "Female",
-                            IsDeleted = false,
                             LastName = "Demo",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER1@HMS.COM",
@@ -195,7 +190,7 @@ namespace HospitalManagementSystem.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==",
                             PhoneNumber = "0300000001",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "16326205-020b-4b31-907a-1f16f949ac0d",
+                            SecurityStamp = "0621ca05-caa2-440e-a1b5-33aa974003b0",
                             TwoFactorEnabled = false,
                             UserName = "user1@hms.com"
                         },
@@ -205,12 +200,11 @@ namespace HospitalManagementSystem.Migrations
                             AccessFailedCount = 0,
                             Address = "Lahore, Pakistan",
                             Age = 20,
-                            ConcurrencyStamp = "801df791-08c2-4c1e-8641-b51fc3c10957",
+                            ConcurrencyStamp = "0ab45c46-7c5c-40a8-83cc-33d759d46e5e",
                             Email = "user2@hms.com",
                             EmailConfirmed = true,
                             FirstName = "First2",
                             Gender = "Male",
-                            IsDeleted = false,
                             LastName = "Demo",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER2@HMS.COM",
@@ -218,7 +212,7 @@ namespace HospitalManagementSystem.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==",
                             PhoneNumber = "0300000002",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4ab3646d-541c-43c6-9b61-d40e65dc289d",
+                            SecurityStamp = "eb2be4ec-6151-4e11-9a6d-f9a0c243d712",
                             TwoFactorEnabled = false,
                             UserName = "user2@hms.com"
                         },
@@ -228,12 +222,11 @@ namespace HospitalManagementSystem.Migrations
                             AccessFailedCount = 0,
                             Address = "Lahore, Pakistan",
                             Age = 21,
-                            ConcurrencyStamp = "7a5a2acb-3962-4dcb-a830-798f2a63c08d",
+                            ConcurrencyStamp = "0400103d-beaa-4921-bd8f-52ad3ca3a0a1",
                             Email = "user3@hms.com",
                             EmailConfirmed = true,
                             FirstName = "First3",
                             Gender = "Female",
-                            IsDeleted = false,
                             LastName = "Demo",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER3@HMS.COM",
@@ -241,7 +234,7 @@ namespace HospitalManagementSystem.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==",
                             PhoneNumber = "0300000003",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7dd56f20-3eb2-46f1-8ea5-8023abf4890c",
+                            SecurityStamp = "91f21fc5-0c97-41b1-b08e-1e3b958706e2",
                             TwoFactorEnabled = false,
                             UserName = "user3@hms.com"
                         },
@@ -251,12 +244,11 @@ namespace HospitalManagementSystem.Migrations
                             AccessFailedCount = 0,
                             Address = "Lahore, Pakistan",
                             Age = 22,
-                            ConcurrencyStamp = "cda848cc-3104-4abf-8366-af58275e07dc",
+                            ConcurrencyStamp = "4268ec6d-8501-4228-ba69-5a987c82c5d0",
                             Email = "user4@hms.com",
                             EmailConfirmed = true,
                             FirstName = "First4",
                             Gender = "Male",
-                            IsDeleted = false,
                             LastName = "Demo",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER4@HMS.COM",
@@ -264,7 +256,7 @@ namespace HospitalManagementSystem.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==",
                             PhoneNumber = "0300000004",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8c69ee06-d7fe-413b-8d40-547aeb7dfdf9",
+                            SecurityStamp = "54937e5d-a557-485d-9b29-d807cb307771",
                             TwoFactorEnabled = false,
                             UserName = "user4@hms.com"
                         },
@@ -274,12 +266,11 @@ namespace HospitalManagementSystem.Migrations
                             AccessFailedCount = 0,
                             Address = "Lahore, Pakistan",
                             Age = 23,
-                            ConcurrencyStamp = "915db7f3-d956-489d-a8ae-29f140d24284",
+                            ConcurrencyStamp = "d3357f87-6cc0-448d-9b81-2b940afdad23",
                             Email = "user5@hms.com",
                             EmailConfirmed = true,
                             FirstName = "First5",
                             Gender = "Female",
-                            IsDeleted = false,
                             LastName = "Demo",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER5@HMS.COM",
@@ -287,7 +278,7 @@ namespace HospitalManagementSystem.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==",
                             PhoneNumber = "0300000005",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ce18786c-cf9d-4f77-bfaf-1395953cc5fa",
+                            SecurityStamp = "dfeddd52-9cff-470d-90fc-24ef93ab180e",
                             TwoFactorEnabled = false,
                             UserName = "user5@hms.com"
                         },
@@ -297,12 +288,11 @@ namespace HospitalManagementSystem.Migrations
                             AccessFailedCount = 0,
                             Address = "Lahore, Pakistan",
                             Age = 24,
-                            ConcurrencyStamp = "3dda1c82-bdb6-43c5-80ba-37c1c59012c0",
+                            ConcurrencyStamp = "9b099fa5-6b76-4e54-87e1-9a681fb943f8",
                             Email = "user6@hms.com",
                             EmailConfirmed = true,
                             FirstName = "First6",
                             Gender = "Male",
-                            IsDeleted = false,
                             LastName = "Demo",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER6@HMS.COM",
@@ -310,7 +300,7 @@ namespace HospitalManagementSystem.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==",
                             PhoneNumber = "0300000006",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "1e30e8fc-967b-4000-a93d-8784b809879b",
+                            SecurityStamp = "8fd59893-56e7-4efb-b6c1-8de902cc4f09",
                             TwoFactorEnabled = false,
                             UserName = "user6@hms.com"
                         },
@@ -320,12 +310,11 @@ namespace HospitalManagementSystem.Migrations
                             AccessFailedCount = 0,
                             Address = "Lahore, Pakistan",
                             Age = 25,
-                            ConcurrencyStamp = "ff703cf7-ce3f-4ab7-a500-bc218f32ba0c",
+                            ConcurrencyStamp = "b91dca52-efc2-4da6-be56-a246a4746d3f",
                             Email = "user7@hms.com",
                             EmailConfirmed = true,
                             FirstName = "First7",
                             Gender = "Female",
-                            IsDeleted = false,
                             LastName = "Demo",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER7@HMS.COM",
@@ -333,7 +322,7 @@ namespace HospitalManagementSystem.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==",
                             PhoneNumber = "0300000007",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "fbae6e92-9693-4e81-8996-993baa68d37f",
+                            SecurityStamp = "2866d24c-dceb-4a60-a28f-39dc6d359a8c",
                             TwoFactorEnabled = false,
                             UserName = "user7@hms.com"
                         },
@@ -343,12 +332,11 @@ namespace HospitalManagementSystem.Migrations
                             AccessFailedCount = 0,
                             Address = "Lahore, Pakistan",
                             Age = 26,
-                            ConcurrencyStamp = "775101e2-fb77-4675-97f8-c84a60dca76a",
+                            ConcurrencyStamp = "be9699fd-e58e-42e2-85aa-d1a5d6bccd42",
                             Email = "user8@hms.com",
                             EmailConfirmed = true,
                             FirstName = "First8",
                             Gender = "Male",
-                            IsDeleted = false,
                             LastName = "Demo",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER8@HMS.COM",
@@ -356,7 +344,7 @@ namespace HospitalManagementSystem.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==",
                             PhoneNumber = "0300000008",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d6790c43-b4e3-496a-bcfe-2e5230315e05",
+                            SecurityStamp = "721776d1-c874-47c3-a13a-8799b95c54c7",
                             TwoFactorEnabled = false,
                             UserName = "user8@hms.com"
                         },
@@ -366,12 +354,11 @@ namespace HospitalManagementSystem.Migrations
                             AccessFailedCount = 0,
                             Address = "Lahore, Pakistan",
                             Age = 27,
-                            ConcurrencyStamp = "e07bb901-58b8-441f-82e9-c027b4615eee",
+                            ConcurrencyStamp = "d5327041-8909-43b8-af0a-621dee555988",
                             Email = "user9@hms.com",
                             EmailConfirmed = true,
                             FirstName = "First9",
                             Gender = "Female",
-                            IsDeleted = false,
                             LastName = "Demo",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER9@HMS.COM",
@@ -379,7 +366,7 @@ namespace HospitalManagementSystem.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==",
                             PhoneNumber = "0300000009",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "78b012f5-9488-468a-a08e-5563c10cc5d3",
+                            SecurityStamp = "9cbd60e3-e8e8-450b-bf79-e70a2472afbb",
                             TwoFactorEnabled = false,
                             UserName = "user9@hms.com"
                         },
@@ -389,12 +376,11 @@ namespace HospitalManagementSystem.Migrations
                             AccessFailedCount = 0,
                             Address = "Lahore, Pakistan",
                             Age = 28,
-                            ConcurrencyStamp = "316fc778-1784-4f84-85ef-d29fda412d23",
+                            ConcurrencyStamp = "fd94599d-8575-4a19-b028-284c95867837",
                             Email = "user10@hms.com",
                             EmailConfirmed = true,
                             FirstName = "First10",
                             Gender = "Male",
-                            IsDeleted = false,
                             LastName = "Demo",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER10@HMS.COM",
@@ -402,7 +388,7 @@ namespace HospitalManagementSystem.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==",
                             PhoneNumber = "0300000010",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "138d831a-04f2-4b81-b6a0-38aa9e852319",
+                            SecurityStamp = "138fb09c-1ee8-4f8a-a44a-12549f1e751b",
                             TwoFactorEnabled = false,
                             UserName = "user10@hms.com"
                         },
@@ -412,12 +398,11 @@ namespace HospitalManagementSystem.Migrations
                             AccessFailedCount = 0,
                             Address = "Lahore, Pakistan",
                             Age = 29,
-                            ConcurrencyStamp = "033434a2-8495-448b-880a-9943c9ac3298",
+                            ConcurrencyStamp = "0e8f937e-74b9-42fb-ac12-09e1197f7f36",
                             Email = "user11@hms.com",
                             EmailConfirmed = true,
                             FirstName = "First11",
                             Gender = "Female",
-                            IsDeleted = false,
                             LastName = "Demo",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER11@HMS.COM",
@@ -425,7 +410,7 @@ namespace HospitalManagementSystem.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==",
                             PhoneNumber = "0300000011",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "15530ddd-93d3-4877-89c0-00fee8ab6df9",
+                            SecurityStamp = "a5580ec9-de9e-47bf-bd8a-5739b9c306e6",
                             TwoFactorEnabled = false,
                             UserName = "user11@hms.com"
                         },
@@ -435,12 +420,11 @@ namespace HospitalManagementSystem.Migrations
                             AccessFailedCount = 0,
                             Address = "Lahore, Pakistan",
                             Age = 30,
-                            ConcurrencyStamp = "55e3595e-6166-4034-9b98-8dee7dea2065",
+                            ConcurrencyStamp = "dfb6fd76-a89a-4cb6-a711-d2efe6bbc1c0",
                             Email = "user12@hms.com",
                             EmailConfirmed = true,
                             FirstName = "First12",
                             Gender = "Male",
-                            IsDeleted = false,
                             LastName = "Demo",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER12@HMS.COM",
@@ -448,7 +432,7 @@ namespace HospitalManagementSystem.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==",
                             PhoneNumber = "0300000012",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "16f6203e-cb21-4811-ad7b-c176fb3e7692",
+                            SecurityStamp = "c3a53a6a-3eab-4f3f-96c2-cbb61ac5e229",
                             TwoFactorEnabled = false,
                             UserName = "user12@hms.com"
                         },
@@ -458,12 +442,11 @@ namespace HospitalManagementSystem.Migrations
                             AccessFailedCount = 0,
                             Address = "Lahore, Pakistan",
                             Age = 31,
-                            ConcurrencyStamp = "4fdf9b1c-5000-4ba4-a9ea-6d3d1355122e",
+                            ConcurrencyStamp = "994d3b01-b86c-4b61-8585-081882b3f7cd",
                             Email = "user13@hms.com",
                             EmailConfirmed = true,
                             FirstName = "First13",
                             Gender = "Female",
-                            IsDeleted = false,
                             LastName = "Demo",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER13@HMS.COM",
@@ -471,7 +454,7 @@ namespace HospitalManagementSystem.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==",
                             PhoneNumber = "0300000013",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a6e3b502-6d33-4138-a4d3-f73a4889601b",
+                            SecurityStamp = "83210488-b33b-41c6-ac41-25b73c0ff462",
                             TwoFactorEnabled = false,
                             UserName = "user13@hms.com"
                         },
@@ -481,12 +464,11 @@ namespace HospitalManagementSystem.Migrations
                             AccessFailedCount = 0,
                             Address = "Lahore, Pakistan",
                             Age = 32,
-                            ConcurrencyStamp = "536c90e8-aafa-42cb-9da4-ff26d95acce7",
+                            ConcurrencyStamp = "434b42cb-9172-449e-90f1-d86bb73db5fd",
                             Email = "user14@hms.com",
                             EmailConfirmed = true,
                             FirstName = "First14",
                             Gender = "Male",
-                            IsDeleted = false,
                             LastName = "Demo",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER14@HMS.COM",
@@ -494,7 +476,7 @@ namespace HospitalManagementSystem.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==",
                             PhoneNumber = "0300000014",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "fa3b8db8-50b8-4465-9bfb-1ce4dfcaf6c7",
+                            SecurityStamp = "77d98ba7-4063-4a86-8203-85da193adbb4",
                             TwoFactorEnabled = false,
                             UserName = "user14@hms.com"
                         },
@@ -504,12 +486,11 @@ namespace HospitalManagementSystem.Migrations
                             AccessFailedCount = 0,
                             Address = "Lahore, Pakistan",
                             Age = 33,
-                            ConcurrencyStamp = "490c0d0f-5c56-4850-a0e5-b19d506562ee",
+                            ConcurrencyStamp = "986a478f-f63e-44c4-a172-87290daf7b8c",
                             Email = "user15@hms.com",
                             EmailConfirmed = true,
                             FirstName = "First15",
                             Gender = "Female",
-                            IsDeleted = false,
                             LastName = "Demo",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER15@HMS.COM",
@@ -517,7 +498,7 @@ namespace HospitalManagementSystem.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==",
                             PhoneNumber = "0300000015",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "350d0f39-cf58-4c22-babc-6bd801cd5df9",
+                            SecurityStamp = "1a408be7-25f3-415b-916d-70b1051a4dff",
                             TwoFactorEnabled = false,
                             UserName = "user15@hms.com"
                         },
@@ -527,12 +508,11 @@ namespace HospitalManagementSystem.Migrations
                             AccessFailedCount = 0,
                             Address = "Lahore, Pakistan",
                             Age = 34,
-                            ConcurrencyStamp = "2b282516-fa0e-4741-a783-e76bddd18d80",
+                            ConcurrencyStamp = "d449e204-8044-45e5-91d9-69db18f2bee9",
                             Email = "user16@hms.com",
                             EmailConfirmed = true,
                             FirstName = "First16",
                             Gender = "Male",
-                            IsDeleted = false,
                             LastName = "Demo",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER16@HMS.COM",
@@ -540,7 +520,7 @@ namespace HospitalManagementSystem.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==",
                             PhoneNumber = "0300000016",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b5f1a579-5646-4e5a-96ff-5b1b4ba03f62",
+                            SecurityStamp = "e1cde4d4-551c-4f88-8588-61313cf64858",
                             TwoFactorEnabled = false,
                             UserName = "user16@hms.com"
                         },
@@ -550,12 +530,11 @@ namespace HospitalManagementSystem.Migrations
                             AccessFailedCount = 0,
                             Address = "Lahore, Pakistan",
                             Age = 35,
-                            ConcurrencyStamp = "8d02131b-a68a-4736-a8f5-5422386e70f3",
+                            ConcurrencyStamp = "2e71dfe3-6ca3-463c-bb94-02e0571b29ec",
                             Email = "user17@hms.com",
                             EmailConfirmed = true,
                             FirstName = "First17",
                             Gender = "Female",
-                            IsDeleted = false,
                             LastName = "Demo",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER17@HMS.COM",
@@ -563,7 +542,7 @@ namespace HospitalManagementSystem.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==",
                             PhoneNumber = "0300000017",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ef75e8f6-35f2-4333-ab7f-c585ff4e6d0f",
+                            SecurityStamp = "9baf40cf-8c38-4089-b541-36c01abfde56",
                             TwoFactorEnabled = false,
                             UserName = "user17@hms.com"
                         },
@@ -573,12 +552,11 @@ namespace HospitalManagementSystem.Migrations
                             AccessFailedCount = 0,
                             Address = "Lahore, Pakistan",
                             Age = 36,
-                            ConcurrencyStamp = "481b3b96-fe79-4127-947c-4e6cac909128",
+                            ConcurrencyStamp = "1767fdba-5dc1-418b-9968-9275d64b03bf",
                             Email = "user18@hms.com",
                             EmailConfirmed = true,
                             FirstName = "First18",
                             Gender = "Male",
-                            IsDeleted = false,
                             LastName = "Demo",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER18@HMS.COM",
@@ -586,7 +564,7 @@ namespace HospitalManagementSystem.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==",
                             PhoneNumber = "0300000018",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b8b1c5be-9b70-4abf-b95b-19d371ae7812",
+                            SecurityStamp = "710bb229-b6b7-476c-8efb-f7e4201aad74",
                             TwoFactorEnabled = false,
                             UserName = "user18@hms.com"
                         },
@@ -596,12 +574,11 @@ namespace HospitalManagementSystem.Migrations
                             AccessFailedCount = 0,
                             Address = "Lahore, Pakistan",
                             Age = 37,
-                            ConcurrencyStamp = "8bb3ad7d-3c85-4211-ad6e-b89cfbc1c47c",
+                            ConcurrencyStamp = "ef974141-67dd-413a-bd56-06509887b85a",
                             Email = "user19@hms.com",
                             EmailConfirmed = true,
                             FirstName = "First19",
                             Gender = "Female",
-                            IsDeleted = false,
                             LastName = "Demo",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER19@HMS.COM",
@@ -609,7 +586,7 @@ namespace HospitalManagementSystem.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==",
                             PhoneNumber = "0300000019",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8f16a52a-f152-4657-900f-60cfd03acbe5",
+                            SecurityStamp = "a0801042-b1a0-4f90-bb90-543b1c28b5f9",
                             TwoFactorEnabled = false,
                             UserName = "user19@hms.com"
                         },
@@ -619,12 +596,11 @@ namespace HospitalManagementSystem.Migrations
                             AccessFailedCount = 0,
                             Address = "Lahore, Pakistan",
                             Age = 38,
-                            ConcurrencyStamp = "14680209-cd58-4c50-b3db-f65b15ed71ba",
+                            ConcurrencyStamp = "e4f879f2-f6df-4774-8aab-fbf69c5f992a",
                             Email = "user20@hms.com",
                             EmailConfirmed = true,
                             FirstName = "First20",
                             Gender = "Male",
-                            IsDeleted = false,
                             LastName = "Demo",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER20@HMS.COM",
@@ -632,7 +608,7 @@ namespace HospitalManagementSystem.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==",
                             PhoneNumber = "0300000020",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "fa4472ab-86c4-4c33-ae7c-05fe8c9fd741",
+                            SecurityStamp = "627da467-a367-494c-b9a7-ad09f278a548",
                             TwoFactorEnabled = false,
                             UserName = "user20@hms.com"
                         },
@@ -642,12 +618,11 @@ namespace HospitalManagementSystem.Migrations
                             AccessFailedCount = 0,
                             Address = "Lahore, Pakistan",
                             Age = 39,
-                            ConcurrencyStamp = "5d5d9670-274b-4ef4-b8c8-5e6172249b64",
+                            ConcurrencyStamp = "88535cdb-1bfc-4483-a085-fcfb73b7a6ca",
                             Email = "user21@hms.com",
                             EmailConfirmed = true,
                             FirstName = "First21",
                             Gender = "Female",
-                            IsDeleted = false,
                             LastName = "Demo",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER21@HMS.COM",
@@ -655,7 +630,7 @@ namespace HospitalManagementSystem.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==",
                             PhoneNumber = "0300000021",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "fe4d420d-14e1-40b2-bba8-3da5f0a84bfa",
+                            SecurityStamp = "0e444a8b-fede-4c5b-b930-713b82652fb3",
                             TwoFactorEnabled = false,
                             UserName = "user21@hms.com"
                         },
@@ -665,12 +640,11 @@ namespace HospitalManagementSystem.Migrations
                             AccessFailedCount = 0,
                             Address = "Lahore, Pakistan",
                             Age = 40,
-                            ConcurrencyStamp = "73b7843d-1fea-42ca-8cc4-08a49d1217fd",
+                            ConcurrencyStamp = "1a1f61d1-880e-4fa5-97d5-2ccca5a30358",
                             Email = "user22@hms.com",
                             EmailConfirmed = true,
                             FirstName = "First22",
                             Gender = "Male",
-                            IsDeleted = false,
                             LastName = "Demo",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER22@HMS.COM",
@@ -678,7 +652,7 @@ namespace HospitalManagementSystem.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==",
                             PhoneNumber = "0300000022",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a0b6f26a-a5bc-4202-856b-f92e9ca1d306",
+                            SecurityStamp = "4a212fe5-aaad-4c93-90f2-2dce74702850",
                             TwoFactorEnabled = false,
                             UserName = "user22@hms.com"
                         },
@@ -688,12 +662,11 @@ namespace HospitalManagementSystem.Migrations
                             AccessFailedCount = 0,
                             Address = "Lahore, Pakistan",
                             Age = 41,
-                            ConcurrencyStamp = "910d843d-f318-41f4-aab5-aeead0bdd9d9",
+                            ConcurrencyStamp = "d5c47986-2654-4a99-8d75-681978c075c2",
                             Email = "user23@hms.com",
                             EmailConfirmed = true,
                             FirstName = "First23",
                             Gender = "Female",
-                            IsDeleted = false,
                             LastName = "Demo",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER23@HMS.COM",
@@ -701,7 +674,7 @@ namespace HospitalManagementSystem.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==",
                             PhoneNumber = "0300000023",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "31931461-049b-4c83-8840-e88c6d9bf55a",
+                            SecurityStamp = "44730c32-7294-4113-b011-623fbaa0116d",
                             TwoFactorEnabled = false,
                             UserName = "user23@hms.com"
                         },
@@ -711,12 +684,11 @@ namespace HospitalManagementSystem.Migrations
                             AccessFailedCount = 0,
                             Address = "Lahore, Pakistan",
                             Age = 42,
-                            ConcurrencyStamp = "26f75d7a-1cce-4c85-8586-e92f490217b0",
+                            ConcurrencyStamp = "2c3c6fe8-6efb-459a-b09b-255054f3e1e3",
                             Email = "user24@hms.com",
                             EmailConfirmed = true,
                             FirstName = "First24",
                             Gender = "Male",
-                            IsDeleted = false,
                             LastName = "Demo",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER24@HMS.COM",
@@ -724,7 +696,7 @@ namespace HospitalManagementSystem.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==",
                             PhoneNumber = "0300000024",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a3e4ffa8-3f11-43b6-bfb3-19d442f1fd85",
+                            SecurityStamp = "1cc938dc-5ae9-42da-bb54-66f0b686baee",
                             TwoFactorEnabled = false,
                             UserName = "user24@hms.com"
                         },
@@ -734,12 +706,11 @@ namespace HospitalManagementSystem.Migrations
                             AccessFailedCount = 0,
                             Address = "Lahore, Pakistan",
                             Age = 43,
-                            ConcurrencyStamp = "1770f15b-1280-41cf-8823-97a694071040",
+                            ConcurrencyStamp = "185500dd-7f45-487c-b0c0-09a4cb138570",
                             Email = "user25@hms.com",
                             EmailConfirmed = true,
                             FirstName = "First25",
                             Gender = "Female",
-                            IsDeleted = false,
                             LastName = "Demo",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER25@HMS.COM",
@@ -747,7 +718,7 @@ namespace HospitalManagementSystem.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==",
                             PhoneNumber = "0300000025",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "47c19b76-fb24-40bb-ae49-3e693f225e4f",
+                            SecurityStamp = "050c80d3-c949-4d86-b262-076cebbf00fb",
                             TwoFactorEnabled = false,
                             UserName = "user25@hms.com"
                         },
@@ -757,12 +728,11 @@ namespace HospitalManagementSystem.Migrations
                             AccessFailedCount = 0,
                             Address = "Lahore, Pakistan",
                             Age = 44,
-                            ConcurrencyStamp = "781dd2bd-6fcd-4181-8339-48c298039c26",
+                            ConcurrencyStamp = "8659fd4b-36e1-4dbc-ba3b-ed8197b39a0c",
                             Email = "user26@hms.com",
                             EmailConfirmed = true,
                             FirstName = "First26",
                             Gender = "Male",
-                            IsDeleted = false,
                             LastName = "Demo",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER26@HMS.COM",
@@ -770,7 +740,7 @@ namespace HospitalManagementSystem.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==",
                             PhoneNumber = "0300000026",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "75cecf60-316d-4ae2-83df-54bdaa7d8eb8",
+                            SecurityStamp = "efb9d6e2-59fb-4c7f-bfb5-278ee313b86c",
                             TwoFactorEnabled = false,
                             UserName = "user26@hms.com"
                         },
@@ -780,12 +750,11 @@ namespace HospitalManagementSystem.Migrations
                             AccessFailedCount = 0,
                             Address = "Lahore, Pakistan",
                             Age = 45,
-                            ConcurrencyStamp = "c5d8bedb-b4ff-4816-b5b9-9cc9117f46d0",
+                            ConcurrencyStamp = "37e6d2c4-b005-442f-a477-e0f28664f760",
                             Email = "user27@hms.com",
                             EmailConfirmed = true,
                             FirstName = "First27",
                             Gender = "Female",
-                            IsDeleted = false,
                             LastName = "Demo",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER27@HMS.COM",
@@ -793,7 +762,7 @@ namespace HospitalManagementSystem.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==",
                             PhoneNumber = "0300000027",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "61bc70db-1db8-4314-8870-dc8ebf0744f9",
+                            SecurityStamp = "fdfdba08-e14a-49fa-814a-b66ee2488874",
                             TwoFactorEnabled = false,
                             UserName = "user27@hms.com"
                         },
@@ -803,12 +772,11 @@ namespace HospitalManagementSystem.Migrations
                             AccessFailedCount = 0,
                             Address = "Lahore, Pakistan",
                             Age = 46,
-                            ConcurrencyStamp = "e4fe4414-a660-4345-bd3b-f51d79302ef1",
+                            ConcurrencyStamp = "8a39b2f4-aa5e-402d-84fa-0e7a113cfdae",
                             Email = "user28@hms.com",
                             EmailConfirmed = true,
                             FirstName = "First28",
                             Gender = "Male",
-                            IsDeleted = false,
                             LastName = "Demo",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER28@HMS.COM",
@@ -816,7 +784,7 @@ namespace HospitalManagementSystem.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==",
                             PhoneNumber = "0300000028",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "c8a0bcb1-f204-43e5-beb6-0d7f306b8f13",
+                            SecurityStamp = "d2770805-de21-4d9e-ae5b-10b54ebd52c4",
                             TwoFactorEnabled = false,
                             UserName = "user28@hms.com"
                         },
@@ -826,12 +794,11 @@ namespace HospitalManagementSystem.Migrations
                             AccessFailedCount = 0,
                             Address = "Lahore, Pakistan",
                             Age = 47,
-                            ConcurrencyStamp = "c7fa1fa1-6421-4b98-8d2f-d1616bfdb325",
+                            ConcurrencyStamp = "b225b486-e56d-4450-9b0d-6990e9d6b0a4",
                             Email = "user29@hms.com",
                             EmailConfirmed = true,
                             FirstName = "First29",
                             Gender = "Female",
-                            IsDeleted = false,
                             LastName = "Demo",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER29@HMS.COM",
@@ -839,7 +806,7 @@ namespace HospitalManagementSystem.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==",
                             PhoneNumber = "0300000029",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d32edbf7-949a-48d7-884b-c7b2929e8e64",
+                            SecurityStamp = "8a64c356-850e-4383-892f-ffdb495175b7",
                             TwoFactorEnabled = false,
                             UserName = "user29@hms.com"
                         },
@@ -849,12 +816,11 @@ namespace HospitalManagementSystem.Migrations
                             AccessFailedCount = 0,
                             Address = "Lahore, Pakistan",
                             Age = 48,
-                            ConcurrencyStamp = "d1f1fec7-9f79-4d55-bdb3-ab8de4c616f8",
+                            ConcurrencyStamp = "5776a74f-9b52-4d51-95a0-342b9e713d90",
                             Email = "user30@hms.com",
                             EmailConfirmed = true,
                             FirstName = "First30",
                             Gender = "Male",
-                            IsDeleted = false,
                             LastName = "Demo",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER30@HMS.COM",
@@ -862,7 +828,7 @@ namespace HospitalManagementSystem.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==",
                             PhoneNumber = "0300000030",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b62f2474-25c4-4382-9024-14e39cced1f7",
+                            SecurityStamp = "cd21b591-11ac-4454-8659-4bfd6be6f42f",
                             TwoFactorEnabled = false,
                             UserName = "user30@hms.com"
                         });
@@ -881,9 +847,6 @@ namespace HospitalManagementSystem.Migrations
 
                     b.Property<int>("DoctorId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<int>("PatientId")
                         .HasColumnType("int");
@@ -910,7 +873,6 @@ namespace HospitalManagementSystem.Migrations
                             Id = 1,
                             AppointmentDate = new DateTime(2025, 1, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DoctorId = 1,
-                            IsDeleted = false,
                             PatientId = 1,
                             Reason = "Routine checkup",
                             Status = "Confirmed"
@@ -920,7 +882,6 @@ namespace HospitalManagementSystem.Migrations
                             Id = 2,
                             AppointmentDate = new DateTime(2025, 1, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DoctorId = 2,
-                            IsDeleted = false,
                             PatientId = 2,
                             Reason = "Routine checkup",
                             Status = "Confirmed"
@@ -930,7 +891,6 @@ namespace HospitalManagementSystem.Migrations
                             Id = 3,
                             AppointmentDate = new DateTime(2025, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DoctorId = 3,
-                            IsDeleted = false,
                             PatientId = 3,
                             Reason = "Routine checkup",
                             Status = "Confirmed"
@@ -940,7 +900,6 @@ namespace HospitalManagementSystem.Migrations
                             Id = 4,
                             AppointmentDate = new DateTime(2025, 1, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DoctorId = 4,
-                            IsDeleted = false,
                             PatientId = 4,
                             Reason = "Routine checkup",
                             Status = "Confirmed"
@@ -950,7 +909,6 @@ namespace HospitalManagementSystem.Migrations
                             Id = 5,
                             AppointmentDate = new DateTime(2025, 1, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DoctorId = 5,
-                            IsDeleted = false,
                             PatientId = 5,
                             Reason = "Routine checkup",
                             Status = "Confirmed"
@@ -1081,9 +1039,6 @@ namespace HospitalManagementSystem.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<string>("ItemType")
                         .HasColumnType("nvarchar(max)");
 
@@ -1167,9 +1122,6 @@ namespace HospitalManagementSystem.Migrations
                     b.Property<int>("DepartmentId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Qualification")
                         .HasColumnType("nvarchar(max)");
 
@@ -1195,7 +1147,6 @@ namespace HospitalManagementSystem.Migrations
                             Id = 1,
                             ConsultationFee = 2000m,
                             DepartmentId = 1,
-                            IsDeleted = false,
                             Specialization = "Specialty 1",
                             UserId = 1
                         },
@@ -1204,7 +1155,6 @@ namespace HospitalManagementSystem.Migrations
                             Id = 2,
                             ConsultationFee = 2200m,
                             DepartmentId = 2,
-                            IsDeleted = false,
                             Specialization = "Specialty 2",
                             UserId = 2
                         },
@@ -1213,7 +1163,6 @@ namespace HospitalManagementSystem.Migrations
                             Id = 3,
                             ConsultationFee = 2400m,
                             DepartmentId = 3,
-                            IsDeleted = false,
                             Specialization = "Specialty 3",
                             UserId = 3
                         },
@@ -1222,7 +1171,6 @@ namespace HospitalManagementSystem.Migrations
                             Id = 4,
                             ConsultationFee = 2600m,
                             DepartmentId = 4,
-                            IsDeleted = false,
                             Specialization = "Specialty 4",
                             UserId = 4
                         },
@@ -1231,7 +1179,6 @@ namespace HospitalManagementSystem.Migrations
                             Id = 5,
                             ConsultationFee = 2800m,
                             DepartmentId = 5,
-                            IsDeleted = false,
                             Specialization = "Specialty 5",
                             UserId = 5
                         });
@@ -1398,9 +1345,6 @@ namespace HospitalManagementSystem.Migrations
 
                     b.Property<int>("DoctorId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<int>("PatientId")
                         .HasColumnType("int");
@@ -1578,9 +1522,6 @@ namespace HospitalManagementSystem.Migrations
                     b.Property<int>("BillId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("datetime2");
 
@@ -1615,9 +1556,6 @@ namespace HospitalManagementSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<int?>("MedicalRecordId")
                         .HasColumnType("int");
 
@@ -1647,9 +1585,6 @@ namespace HospitalManagementSystem.Migrations
                     b.Property<string>("Dosage")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<int>("MedicineId")
                         .HasColumnType("int");
@@ -2152,7 +2087,7 @@ namespace HospitalManagementSystem.Migrations
                     b.HasOne("HospitalManagementSystem.Data.Models.Doctor", "Doctor")
                         .WithMany("Appointments")
                         .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("HospitalManagementSystem.Data.Models.Patient", "Patient")

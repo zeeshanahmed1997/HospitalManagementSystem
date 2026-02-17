@@ -21,7 +21,7 @@ namespace HospitalManagementSystem.DataAccessLayer
                        u.Email, u.PhoneNumber, r.Name AS Role
                 FROM AspNetUsers u
                 LEFT JOIN AspNetUserRoles ur ON u.Id = ur.UserId
-                LEFT JOIN AspNetRoles r ON ur.RoleId = r.Id";
+                LEFT JOIN AspNetRoles r ON ur.RoleId = r.Id where u.IsDeleted=0";
 
             try
             {
@@ -47,7 +47,7 @@ namespace HospitalManagementSystem.DataAccessLayer
                 FROM AspNetUsers u
                 LEFT JOIN AspNetUserRoles ur ON u.Id = ur.UserId
                 LEFT JOIN AspNetRoles r ON ur.RoleId = r.Id
-                WHERE u.Id = @Id";
+                WHERE u.Id = @Id and u.IsDeleted=0";
 
             try
             {
@@ -102,6 +102,25 @@ namespace HospitalManagementSystem.DataAccessLayer
             catch (Exception ex)
             {
                 logger.LogError(ex, "Error updating user {Id}", userDto.Id);
+                return ApiResponse<bool>.ErrorResponse("Database error.", [ex.Message]);
+            }
+        }
+        public async Task<ApiResponse<bool>> DeleteUser(int id)
+        {
+            if (id <= 0)
+                return ApiResponse<bool>.ErrorResponse("Invalid user ID.");
+            const string sql = "update AspNetUsers set IsDeleted=1 WHERE Id = @Id";
+            try
+            {
+                using IDbConnection db = new SqlConnection(_connectionString);
+                int rowsAffected = await db.ExecuteAsync(sql, new { Id = id });
+                if (rowsAffected == 0)
+                    return ApiResponse<bool>.ErrorResponse("User not found.");
+                return ApiResponse<bool>.SuccessResponse(true, "User deleted successfully.");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error deleting user {Id}", id);
                 return ApiResponse<bool>.ErrorResponse("Database error.", [ex.Message]);
             }
         }

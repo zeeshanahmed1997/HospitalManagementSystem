@@ -10,5 +10,6 @@
         public string? PaymentMethod { get; set; }   // Cash, Card, Online, Insurance
         public string? TransactionId { get; set; }   // optional
         public string? Status { get; set; }          // Success, Pending, Refunded
+        public bool IsDeleted { get; set; } = false;
     }
 }

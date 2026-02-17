@@ -11,5 +11,6 @@ namespace HospitalManagementSystem.Data.Models
         [ForeignKey("WardId")]
         public Ward? Ward { get; set; }
         public bool IsDeleted { get; set; } = false;
+        public ICollection<Admission> Admissions { get; set; } = new List<Admission>();
     }
 }

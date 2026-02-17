@@ -40,4 +40,11 @@ public class Usercontroller : ControllerBase
         var users = await _userRepository.UpdateUser(id,updatedUser);
         return Ok(users);
     }
+    [HttpDelete("delete/{id}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> DeleteUser([FromRoute] int id)
+    {
+        var result = await _userRepository.DeleteUser(id);
+        return Ok(result);
+    }
 }

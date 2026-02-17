@@ -12,5 +12,6 @@
 
         public ICollection<PrescriptionItem> Items { get; set; }
         public int? MedicalRecordId { get; set; } // optional link
+        public bool IsDeleted { get; set; } = false;
     }
 }

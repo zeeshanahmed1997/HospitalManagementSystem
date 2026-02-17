@@ -10,5 +10,6 @@
         public int Quantity { get; set; }
         public string Dosage { get; set; }      // e.g. "1 tablet twice daily"
         public decimal? PriceAtIssue { get; set; } // snapshot of price
+        public bool IsDeleted { get; set; } = false;
     }
 }

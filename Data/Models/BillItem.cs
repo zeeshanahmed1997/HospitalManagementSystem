@@ -9,5 +9,6 @@
         public decimal Amount { get; set; }
         public string? ItemType { get; set; }        // Enum: Consultation, Medicine, Lab, Ward, Other
         public int? ReferenceId { get; set; }       // e.g. AppointmentId, PrescriptionItemId, LabReportId
+        public bool IsDeleted { get; set; } = false;
     }
 }

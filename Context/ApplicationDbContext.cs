@@ -8,60 +8,184 @@ namespace HospitalManagementSystem.Context
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole<int>, int>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
+        {
+        }
 
-        public DbSet<Patient> Patients { get; set; }
-        public DbSet<Doctor> Doctors { get; set; }
-        public DbSet<Department> Departments { get; set; }
-        public DbSet<Appointment> Appointments { get; set; }
-        public DbSet<MedicalRecord> MedicalRecords { get; set; }
-        public DbSet<Bill> Bills { get; set; }
-        public DbSet<Ward> Wards { get; set; }
-        public DbSet<Bed> Beds { get; set; }
-        public DbSet<Medicine> Medicines { get; set; }
-        public DbSet<LabTest> LabTests { get; set; }
-        public DbSet<LabReport> LabReports { get; set; }
-        public DbSet<Staff> StaffMembers { get; set; }
-        public DbSet<Prescription> Prescriptions { get; set; }
-        public DbSet<PrescriptionItem> PrescriptionItems { get; set; }
-        public DbSet<Admission> Admissions { get; set; }
-        public DbSet<BillItem> BillItems { get; set; }
-        public DbSet<Payment> Payments { get; set; }
+        // DbSets
+        public DbSet<Patient> Patients { get; set; } = null!;
+        public DbSet<Doctor> Doctors { get; set; } = null!;
+        public DbSet<Department> Departments { get; set; } = null!;
+        public DbSet<Appointment> Appointments { get; set; } = null!;
+        public DbSet<MedicalRecord> MedicalRecords { get; set; } = null!;
+        public DbSet<Bill> Bills { get; set; } = null!;
+        public DbSet<Ward> Wards { get; set; } = null!;
+        public DbSet<Bed> Beds { get; set; } = null!;
+        public DbSet<Medicine> Medicines { get; set; } = null!;
+        public DbSet<LabTest> LabTests { get; set; } = null!;
+        public DbSet<LabReport> LabReports { get; set; } = null!;
+        public DbSet<Staff> StaffMembers { get; set; } = null!;
+        public DbSet<Prescription> Prescriptions { get; set; } = null!;
+        public DbSet<PrescriptionItem> PrescriptionItems { get; set; } = null!;
+        public DbSet<Admission> Admissions { get; set; } = null!;
+        public DbSet<BillItem> BillItems { get; set; } = null!;
+        public DbSet<Payment> Payments { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<Patient>().HasOne(p => p.User).WithOne().HasForeignKey<Patient>(p => p.UserId).OnDelete(DeleteBehavior.Cascade);
-            builder.Entity<Doctor>().HasOne(d => d.User).WithOne().HasForeignKey<Doctor>(d => d.UserId).OnDelete(DeleteBehavior.Cascade);
-            builder.Entity<Staff>().HasOne(s => s.User).WithOne().HasForeignKey<Staff>(s => s.UserId).OnDelete(DeleteBehavior.Cascade);
+            // ───────────────────────────────────────────────
+            // Identity & User related (1:1 with profiles)
+            // ───────────────────────────────────────────────
+            builder.Entity<Patient>()
+                .HasOne(p => p.User)
+                .WithOne()
+                .HasForeignKey<Patient>(p => p.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<Appointment>().HasOne(a => a.Patient).WithMany().HasForeignKey(a => a.PatientId).OnDelete(DeleteBehavior.Restrict);
-            builder.Entity<Appointment>().HasOne(a => a.Doctor).WithMany().HasForeignKey(a => a.DoctorId).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<Doctor>()
+                .HasOne(d => d.User)
+                .WithOne()
+                .HasForeignKey<Doctor>(d => d.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<MedicalRecord>().HasOne(mr => mr.Patient).WithMany().HasForeignKey(mr => mr.PatientId).OnDelete(DeleteBehavior.Restrict);
-            builder.Entity<MedicalRecord>().HasOne(mr => mr.Doctor).WithMany().HasForeignKey(mr => mr.DoctorId).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<Staff>()
+                .HasOne(s => s.User)
+                .WithOne()
+                .HasForeignKey<Staff>(s => s.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<LabReport>().HasOne(lr => lr.Patient).WithMany().HasForeignKey(lr => lr.PatientId).OnDelete(DeleteBehavior.Restrict);
+            // ───────────────────────────────────────────────
+            // Appointment (protect history)
+            // ───────────────────────────────────────────────
+            builder.Entity<Appointment>()
+                .HasOne(a => a.Patient)
+                .WithMany(p => p.Appointments)           // ← add navigation if not present
+                .HasForeignKey(a => a.PatientId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Bill>().Property(b => b.TotalAmount).HasPrecision(18, 2);
-            builder.Entity<Bill>().Property(b => b.Tax).HasPrecision(18, 2);
-            builder.Entity<Doctor>().Property(d => d.ConsultationFee).HasPrecision(18, 2);
-            builder.Entity<Staff>().Property(s => s.Salary).HasPrecision(18, 2);
-            builder.Entity<Medicine>().Property(m => m.UnitPrice).HasPrecision(18, 2);
-            builder.Entity<LabTest>().Property(l => l.Price).HasPrecision(18, 2);
+            builder.Entity<Appointment>()
+                .HasOne(a => a.Doctor)
+                .WithMany(d => d.Appointments)           // ← add navigation if not present
+                .HasForeignKey(a => a.DoctorId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<Appointment>().Property(a => a.Status).HasConversion(v => v.ToString(), v => (AppointmentStatus)Enum.Parse(typeof(AppointmentStatus), v));
+            builder.Entity<Appointment>()
+                .Property(a => a.Status)
+                .HasConversion<string>()
+                .HasMaxLength(50);
 
-            builder.Entity<Prescription>().HasOne(p => p.Patient).WithMany().HasForeignKey(p => p.PatientId).OnDelete(DeleteBehavior.Restrict);
-            builder.Entity<Prescription>().HasOne(p => p.Doctor).WithMany().HasForeignKey(p => p.DoctorId).OnDelete(DeleteBehavior.Restrict);
-            builder.Entity<PrescriptionItem>().HasOne(pi => pi.Prescription).WithMany(p => p.Items).HasForeignKey(pi => pi.PrescriptionId);
-            builder.Entity<PrescriptionItem>().HasOne(pi => pi.Medicine).WithMany().HasForeignKey(pi => pi.MedicineId);
-            builder.Entity<Admission>().HasOne(a => a.Patient).WithMany().HasForeignKey(a => a.PatientId);
-            builder.Entity<Admission>().HasOne(a => a.Bed).WithMany().HasForeignKey(a => a.BedId).IsRequired(false);
-            builder.Entity<BillItem>().HasOne(bi => bi.Bill).WithMany(b => b.Items).HasForeignKey(bi => bi.BillId);
-            builder.Entity<Payment>().HasOne(p => p.Bill).WithMany(b => b.Payments).HasForeignKey(p => p.BillId);
+            // ───────────────────────────────────────────────
+            // Medical Records & Lab Reports (protect history)
+            // ───────────────────────────────────────────────
+            builder.Entity<MedicalRecord>()
+                .HasOne(mr => mr.Patient)
+                .WithMany(p => p.MedicalRecords)
+                .HasForeignKey(mr => mr.PatientId)
+                .OnDelete(DeleteBehavior.Restrict);
 
+            builder.Entity<MedicalRecord>()
+                .HasOne(mr => mr.Doctor)
+                .WithMany(d => d.MedicalRecords)
+                .HasForeignKey(mr => mr.DoctorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<LabReport>()
+                .HasOne(lr => lr.Patient)
+                .WithMany(p => p.LabReports)
+                .HasForeignKey(lr => lr.PatientId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // ───────────────────────────────────────────────
+            // Prescription chain
+            // ───────────────────────────────────────────────
+            builder.Entity<Prescription>()
+                .HasOne(p => p.Patient)
+                .WithMany(p => p.Prescriptions)
+                .HasForeignKey(p => p.PatientId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Prescription>()
+                .HasOne(p => p.Doctor)
+                .WithMany(d => d.Prescriptions)
+                .HasForeignKey(p => p.DoctorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<PrescriptionItem>()
+                .HasOne(pi => pi.Prescription)
+                .WithMany(p => p.Items)
+                .HasForeignKey(pi => pi.PrescriptionId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<PrescriptionItem>()
+                .HasOne(pi => pi.Medicine)
+                .WithMany()
+                .HasForeignKey(pi => pi.MedicineId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // ───────────────────────────────────────────────
+            // Billing & Payments
+            // ───────────────────────────────────────────────
+            builder.Entity<Bill>()
+                .HasMany(b => b.Items)
+                .WithOne(bi => bi.Bill)
+                .HasForeignKey(bi => bi.BillId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Bill>()
+                .HasMany(b => b.Payments)
+                .WithOne(p => p.Bill)
+                .HasForeignKey(p => p.BillId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Bill>()
+                .Property(b => b.TotalAmount)
+                .HasPrecision(18, 2);
+
+            builder.Entity<Bill>()
+                .Property(b => b.Tax)
+                .HasPrecision(18, 2);
+
+            // ───────────────────────────────────────────────
+            // Other monetary fields
+            // ───────────────────────────────────────────────
+            builder.Entity<Doctor>()
+                .Property(d => d.ConsultationFee)
+                .HasPrecision(18, 2);
+
+            builder.Entity<Staff>()
+                .Property(s => s.Salary)
+                .HasPrecision(18, 2);
+
+            builder.Entity<Medicine>()
+                .Property(m => m.UnitPrice)
+                .HasPrecision(18, 2);
+
+            builder.Entity<LabTest>()
+                .Property(l => l.Price)
+                .HasPrecision(18, 2);
+
+            // ───────────────────────────────────────────────
+            // Admission – Bed can be nullable
+            // ───────────────────────────────────────────────
+            builder.Entity<Admission>()
+                .HasOne(a => a.Patient)
+                .WithMany(p => p.Admissions)
+                .HasForeignKey(a => a.PatientId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Admission>()
+                .HasOne(a => a.Bed)
+                .WithMany(b => b.Admissions)
+                .HasForeignKey(a => a.BedId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // ───────────────────────────────────────────────
+            // Seed Data – Roles
+            // ───────────────────────────────────────────────
             builder.Entity<IdentityRole<int>>().HasData(
                 new IdentityRole<int> { Id = 1, Name = "Admin", NormalizedName = "ADMIN" },
                 new IdentityRole<int> { Id = 2, Name = "Doctor", NormalizedName = "DOCTOR" },
@@ -69,69 +193,150 @@ namespace HospitalManagementSystem.Context
                 new IdentityRole<int> { Id = 4, Name = "Staff", NormalizedName = "STAFF" }
             );
 
-            var staticHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q==";
-            var seedDate = new DateTime(2026, 1, 1);
+            // ───────────────────────────────────────────────
+            // Seed Data – Users & Roles (fixed structure)
+            // ───────────────────────────────────────────────
+            const string staticHash = "AQAAAAIAAYagAAAAEOM2G8P9XkY5TzR7LqV3WpZ9mN1vXc8Q=="; // example BCrypt hash
 
-            builder.Entity<ApplicationUser>().HasData(new ApplicationUser
-            {
-                Id = 31,
-                UserName = "admin@hms.com",
-                NormalizedUserName = "ADMIN@HMS.COM",
-                Email = "admin@hms.com",
-                NormalizedEmail = "ADMIN@HMS.COM",
-                FirstName = "Admin",
-                LastName = "User",
-                Gender = "Male",
-                Age = 35,
-                Address = "Lahore, Pakistan",
-                PhoneNumber = "03000000000",
-                EmailConfirmed = true,
-                SecurityStamp = "ADMIN_SECURITY_STAMP",
-                PasswordHash = staticHash
-            });
+            // Admin
+            builder.Entity<ApplicationUser>().HasData(
+                new ApplicationUser
+                {
+                    Id = 31,
+                    UserName = "admin@hms.com",
+                    NormalizedUserName = "ADMIN@HMS.COM",
+                    Email = "admin@hms.com",
+                    NormalizedEmail = "ADMIN@HMS.COM",
+                    FirstName = "System",
+                    LastName = "Administrator",
+                    Gender = "Male",
+                    Age = 40,
+                    Address = "Lahore, Pakistan",
+                    PhoneNumber = "03000000000",
+                    EmailConfirmed = true,
+                    SecurityStamp = Guid.NewGuid().ToString(),
+                    PasswordHash = staticHash
+                });
 
-            builder.Entity<IdentityUserRole<int>>().HasData(new IdentityUserRole<int> 
-            { 
-                UserId = 31, 
-                RoleId = 1 
-            });
+            builder.Entity<IdentityUserRole<int>>().HasData(
+                new IdentityUserRole<int> { UserId = 31, RoleId = 1 });
 
+            // Demo users (1–30)
             for (int i = 1; i <= 30; i++)
             {
-                builder.Entity<ApplicationUser>().HasData(new ApplicationUser
+                var user = new ApplicationUser
                 {
                     Id = i,
                     UserName = $"user{i}@hms.com",
                     NormalizedUserName = $"USER{i}@HMS.COM",
                     Email = $"user{i}@hms.com",
                     NormalizedEmail = $"USER{i}@HMS.COM",
-                    FirstName = $"UserFN{i}",
-                    LastName = "UserLN",
+                    FirstName = $"First{i}",
+                    LastName = "Demo",
                     Gender = i % 2 == 0 ? "Male" : "Female",
-                    Age = 20 + i,
+                    Age = 18 + (i % 50),
                     Address = "Lahore, Pakistan",
-                    PhoneNumber = $"0300123456{i % 10}",
+                    PhoneNumber = $"0300{i:D6}",
                     EmailConfirmed = true,
-                    SecurityStamp = "STATIC_STAMP_" + i,
+                    SecurityStamp = Guid.NewGuid().ToString(),
                     PasswordHash = staticHash
-                });
+                };
 
-                int roleId = i <= 10 ? 2 : (i <= 20 ? 3 : 4);
-                builder.Entity<IdentityUserRole<int>>().HasData(new IdentityUserRole<int> { UserId = i, RoleId = roleId });
+                builder.Entity<ApplicationUser>().HasData(user);
+
+                int roleId = i <= 10 ? 2 : (i <= 20 ? 3 : 4); // Doctors 1-10, Patients 11-20, Staff 21-30
+                builder.Entity<IdentityUserRole<int>>().HasData(
+                    new IdentityUserRole<int> { UserId = i, RoleId = roleId });
             }
 
-            for (int i = 1; i <= 10; i++)
+            // ───────────────────────────────────────────────
+            // Other seed data (Departments, Doctors, Patients, etc.)
+            // Reduced volume – 5 instead of 10 to keep migration fast
+            // ───────────────────────────────────────────────
+            var seedDate = new DateTime(2025, 1, 1);
+
+            for (int i = 1; i <= 5; i++)
             {
-                builder.Entity<Department>().HasData(new Department { Id = i, Name = $"Dept {i}" });
-                builder.Entity<Ward>().HasData(new Ward { Id = i, Name = $"Ward {i}", Type = "General", TotalBeds = 10 });
-                builder.Entity<Bed>().HasData(new Bed { Id = i, BedNumber = $"B-{i}", IsOccupied = false, WardId = i });
-                builder.Entity<Medicine>().HasData(new Medicine { Id = i, Name = $"Medicine {i}", UnitPrice = 10.5m * i, StockQuantity = 100, ExpiryDate = seedDate.AddYears(1) });
-                builder.Entity<LabTest>().HasData(new LabTest { Id = i, TestName = $"Test {i}", Price = 500.00m + (i * 100) });
-                builder.Entity<Doctor>().HasData(new Doctor { Id = i, UserId = i, DepartmentId = i, Specialization = "Specialist", ConsultationFee = 1500 });
-                builder.Entity<Patient>().HasData(new Patient { Id = i, UserId = i + 10, BloodGroup = "A+" });
-                builder.Entity<Staff>().HasData(new Staff { Id = i, UserId = i + 20, Designation = "Nurse", Salary = 45000 });
-                builder.Entity<Appointment>().HasData(new Appointment { Id = i, PatientId = i, DoctorId = i, AppointmentDate = seedDate.AddDays(i), Status = AppointmentStatus.Confirmed });
-                builder.Entity<LabReport>().HasData(new LabReport { Id = i, PatientId = i, LabTestId = i, ResultDetails = "Normal", TestDate = seedDate });
+                builder.Entity<Department>().HasData(new Department { Id = i, Name = $"Department {i}" });
+
+                builder.Entity<Ward>().HasData(new Ward
+                {
+                    Id = i,
+                    Name = $"Ward {i}",
+                    Type = i % 2 == 0 ? "General" : "Special",
+                    TotalBeds = 12
+                });
+
+                builder.Entity<Bed>().HasData(new Bed
+                {
+                    Id = i,
+                    BedNumber = $"B-{i:00}",
+                    IsOccupied = false,
+                    WardId = i
+                });
+
+                builder.Entity<Medicine>().HasData(new Medicine
+                {
+                    Id = i,
+                    Name = $"Medicine {i}",
+                    UnitPrice = 45.50m * i,
+                    StockQuantity = 200,
+                    ExpiryDate = seedDate.AddYears(2)
+                });
+
+                builder.Entity<LabTest>().HasData(new LabTest
+                {
+                    Id = i,
+                    TestName = $"Lab Test {i}",
+                    Price = 800m + (i * 150)
+                });
+
+                // Doctor linked to user 1–5
+                builder.Entity<Doctor>().HasData(new Doctor
+                {
+                    Id = i,
+                    UserId = i,
+                    DepartmentId = i,
+                    Specialization = $"Specialty {i}",
+                    ConsultationFee = 1800m + (i * 200)
+                });
+
+                // Patient linked to user 11–15
+                builder.Entity<Patient>().HasData(new Patient
+                {
+                    Id = i,
+                    UserId = i + 10,
+                    BloodGroup = i % 3 == 0 ? "O+" : (i % 3 == 1 ? "A+" : "B+")
+                });
+
+                // Staff linked to user 21–25
+                builder.Entity<Staff>().HasData(new Staff
+                {
+                    Id = i,
+                    UserId = i + 20,
+                    Designation = i % 2 == 0 ? "Nurse" : "Technician",
+                    Salary = 48000m + (i * 5000)
+                });
+
+                // Sample appointment
+                builder.Entity<Appointment>().HasData(new Appointment
+                {
+                    Id = i,
+                    PatientId = i,
+                    DoctorId = i,
+                    AppointmentDate = seedDate.AddDays(i * 3),
+                    Status = AppointmentStatus.Confirmed,
+                    Reason = "Routine checkup"
+                });
+
+                builder.Entity<LabReport>().HasData(new LabReport
+                {
+                    Id = i,
+                    PatientId = i,
+                    LabTestId = i,
+                    ResultDetails = "Within normal limits",
+                    TestDate = seedDate.AddDays(i)
+                });
             }
         }
     }
