@@ -12,7 +12,28 @@ namespace HospitalManagementSystem.DataAccessLayer
     {
         private readonly string _connectionString = configuration.GetConnectionString("HMS")
             ?? throw new InvalidOperationException("Connection string 'HMS' not found.");
-
+        public async Task<ApiResponse<IEnumerable<UserDto>>> GetDoctors()
+        {
+            try
+            {
+                const string sql = @"
+                SELECT u.Id, u.FirstName, u.LastName, u.Gender, u.Age, u.Address, 
+                       u.Email, u.PhoneNumber, r.Name AS Role
+                FROM AspNetUsers u
+                LEFT JOIN AspNetUserRoles ur ON u.Id = ur.UserId
+                LEFT JOIN AspNetRoles r ON ur.RoleId = r.Id where u.IsDeleted=0 and r.Name='Doctor'";
+                using IDbConnection db = new SqlConnection(_connectionString);
+                var doctors = await db.QueryAsync<UserDto>(sql);
+                if(doctors == null) {
+                    return ApiResponse<IEnumerable<UserDto>>.ErrorResponse("No doctors found.");
+                }
+                return ApiResponse<IEnumerable<UserDto>>.SuccessResponse(doctors, "Doctors retrieved successfully.");
+            }
+            catch (Exception ex)
+            {
+                return ApiResponse<IEnumerable<UserDto>>.ErrorResponse("Failed to retrieve doctors.", [ex.Message]);
+            }
+        }
         public async Task<ApiResponse<IEnumerable<UserDto>>> GetAllUsersAsync()
         {
             // Map table columns to DTO properties using AS aliases
@@ -124,6 +145,7 @@ namespace HospitalManagementSystem.DataAccessLayer
                 return ApiResponse<bool>.ErrorResponse("Database error.", [ex.Message]);
             }
         }
+
         public async Task<ApiResponse<UserDto>> CreateUser(UserDto user)
         {
             if (user is null) return ApiResponse<UserDto>.ErrorResponse("User data is null.");
@@ -206,6 +228,7 @@ namespace HospitalManagementSystem.DataAccessLayer
                 return ApiResponse<UserDto>.ErrorResponse("Creation failed.", [ex.Message]);
             }
         }
+
 
     }
 }

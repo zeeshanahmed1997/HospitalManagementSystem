@@ -47,4 +47,12 @@ public class Usercontroller : ControllerBase
         var result = await _userRepository.DeleteUser(id);
         return Ok(result);
     }
+
+    [HttpGet("doctors")]
+    [Authorize(Roles ="Admin")]
+    public async Task<IActionResult> GetDoctors()
+    {
+        var result = await _userRepository.GetDoctors();
+        return Ok(result);
+    }
 }
