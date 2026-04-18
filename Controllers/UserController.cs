@@ -49,10 +49,24 @@ public class Usercontroller : ControllerBase
     }
 
     [HttpGet("doctors")]
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles ="Admin, Patient")]
     public async Task<IActionResult> GetDoctors()
     {
         var result = await _userRepository.GetDoctors();
+        return Ok(result);
+    }
+    [HttpGet("patients")]
+    [Authorize(Roles = "Admin, Doctor")]
+    public async Task<IActionResult> GetPatients()
+    {
+        var result = await _userRepository.GetPatients();
+        return Ok(result);
+    }
+    [HttpGet("patients-by-doctor")]
+    [Authorize(Roles = "Admin, Doctor")]
+    public async Task<IActionResult> GetPatientsByDoctor([FromQuery] int doctorId)
+    {
+        var result = await _userRepository.GetPatientsByDoctor(doctorId);
         return Ok(result);
     }
 }
