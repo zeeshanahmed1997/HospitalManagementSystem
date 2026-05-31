@@ -37,6 +37,7 @@ var connectionString = builder.Configuration.GetConnectionString("HMS");
 builder.Services.AddSignalR();
 
 builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<ReportRepository>();
 builder.Services.AddScoped<AppointmentRepository>();
 builder.Services.AddScoped<DepartmentRepository>();
 builder.Services.AddScoped<MedicineRepository>();

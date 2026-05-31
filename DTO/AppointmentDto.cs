@@ -12,5 +12,6 @@
         public string? PatientPhone { get; set; }
         public int DoctorId { get; set; }
         public string? DoctorName { get; set; }
+        public string? TokenNumber { get; set; }
     }
 }
